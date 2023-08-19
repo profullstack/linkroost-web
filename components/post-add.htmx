@@ -1,0 +1,12 @@
+<h1>Add post</h1>
+<form hx-post="/add" hx-wrap="outerHTML">
+  <p>
+    <div><label>Title</label></div>
+    <input name="title" />
+  </p>
+  <p>
+    <div><label>Text</label></div>
+    <textarea name="text"></textarea>
+  </p>
+  <input type="submit" value="Save post" />
+</form>

@@ -1,0 +1,14 @@
+.sections {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (width >=768px) {
+    .sections {
+        flex-direction: row;
+    }
+}
+
+@media (width < 480px) {}
+
+@media (width >=480px) {}
