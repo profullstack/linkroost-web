@@ -1,9 +1,6 @@
-node_modules/
+build
+node_modules
 package-lock.json
-ssl
-public
-*.lock
-*.log
-*output
-components/*.svelte.js
-components/*.jsx.js
+.env.local
+data/
+history.txt
