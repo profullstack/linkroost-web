@@ -69,6 +69,42 @@ export const actions = (db, store) => {
 				console.error(err);
 				throw err;
 			}
+		},
+		async getAllByUserId(createdBy) {
+			const query = `SELECT * FROM links WHERE createdBy = $createdBy`;
+
+			console.log(query, createdBy);
+			try {
+				const links = await db.query(query, {
+					createdBy
+				});
+
+				console.log('all links:', links);
+
+				return links[0].result;
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
+		},
+		async update(id, data) {
+			console.log('update:', data);
+			let { url, alias } = data;
+			const query = `UPDATE links SET url = $url, alias = $alias, updatedAt = $updateAt WHERE id = $id`;
+
+			try {
+				const link = await db.merge(id, {
+					url,
+					alias,
+					updatedAt: new Date().toISOString()
+				});
+
+				console.log('link: ', link);
+				return link;
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
 		}
 	};
 };
