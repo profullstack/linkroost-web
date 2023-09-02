@@ -33,7 +33,10 @@ export default {
 		trace: true
 	},
 	http: {
-		port
+		port,
+		csp: {
+			'script-src': "'unsafe-inline' 'self' https://plausible.io https://www.googletagmanager.com" //"yash.test.com:8443 'unsafe-eval';"
+		}
 	},
 	build: {
 		transform: {
@@ -64,6 +67,8 @@ export default {
 		types(),
 		session(),
 		ws(),
-		esbuild()
+		esbuild({
+			ignores: ['woff', 'ttf', 'png', 'svg']
+		})
 	]
 };
