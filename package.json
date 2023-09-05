@@ -2,12 +2,16 @@
   "name": "primate-app",
   "private": true,
   "scripts": {
-    "dev": "npx primate",
+    "dev": "npx nodemon -i ./build -e js,css,svelte,html primate",
     "start": "npx primate serve",
     "db:start": ". ./.env && . ./.env.local && surreal start -A --user root --pass root --bind 0.0.0.0:$DB_PORT file:data/db",
     "db:console": ". ./.env && . ./.env.local && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
     "db:export": ". ./.env && . ./.env.local && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
     "db:import": ". ./.env && . ./.env.local && surreal import --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
+    "win:db:start": "call ./.env.bat && call ./.env.local.bat && surreal start -A --user root --pass root --bind 0.0.0.0:$DB_PORT file:data/db",
+    "win:db:console": "call ./.env.bat && call ./.env.local.bat && surreal sql --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB --pretty",
+    "win:db:export": "call ./.env.bat && call ./.env.local.bat && surreal export --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
+    "win:db:import": "call ./.env.bat && call ./.env.local.bat && surreal import --conn http://localhost:$DB_PORT --user root --pass root --ns $DB_NS --db $DB_DB dump.sql",
     "deploy": "./bin/deploy.sh"
   },
   "dependencies": {
@@ -25,6 +29,7 @@
   },
   "devDependencies": {
     "maximin": "^0.1.5",
+    "nodemon": "^3.0.1",
     "prettier": "^3.0.2"
   },
   "type": "module"
