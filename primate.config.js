@@ -1,6 +1,6 @@
-import svelte from '@primate/svelte';
+import {svelte} from '@primate/frontend';
 import store from '@primate/store';
-import { surrealdb } from '@primate/store';
+import {surrealdb} from '@primate/store';
 import types from '@primate/types';
 import session from '@primate/session';
 import ws from '@primate/ws';
@@ -26,6 +26,8 @@ const {
 	APP_DESCRIPTION
 } = process.env;
 
+console.log(host, db_port)
+
 export default {
 	logger: {
 		// show all logs
@@ -35,7 +37,8 @@ export default {
 	http: {
 		port,
 		csp: {
-			'script-src': "'unsafe-inline' 'self' https://plausible.io https://www.googletagmanager.com" //"yash.test.com:8443 'unsafe-eval';"
+			'script-src':
+				"'unsafe-inline' 'self' https://plausible.io https://www.googletagmanager.com" //"yash.test.com:8443 'unsafe-eval';"
 		}
 	},
 	build: {
