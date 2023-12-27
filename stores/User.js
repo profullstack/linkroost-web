@@ -6,10 +6,14 @@ export const actions = ({ connection: db }) => {
 		async me() {
 			const me = await db.info();
 			delete me.password;
-			console.log('me: ', me.email);
+
+			console.log('me: ', me);
+
 			return me;
 		},
+
 		async generateEmailVerifyCode(id) {
+			console.log('email user id:', id);
 			const code = Math.random().toString(36).substr(2, 10);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
@@ -26,10 +30,12 @@ export const actions = ({ connection: db }) => {
 				.pop()
 				.result.pop();
 
-			console.log('user: ', result);
+			console.log('user email verification: ', result);
 			return result;
 		},
+
 		async generatePhoneVerifyCode(id) {
+			console.log('phone user id:', id);
 			const code = Math.random().toString().substr(2, 6);
 			const expiration = new Date(Date.now() + 2 * (60 * 60 * 1000));
 
@@ -46,13 +52,15 @@ export const actions = ({ connection: db }) => {
 				.pop()
 				.result.pop();
 
-			console.log('user: ', result);
+			console.log('user phone verification: ', result);
+
 			return result;
 		},
 
 		async create(user) {
 			console.log('create:', user);
-			let { email, username, phone, password, password2 } = user;
+			let { email, username, firstName, lastName, phone, phonePrefix, password, password2 } =
+				user;
 			const { DB_NS, DB_DB } = env;
 
 			console.log('db:', DB_NS, DB_DB);
@@ -70,7 +78,10 @@ export const actions = ({ connection: db }) => {
 					DB: DB_DB,
 					SC: 'allusers',
 					email,
+					firstName,
+					lastName,
 					phone,
+					phonePrefix,
 					username,
 					password,
 					createdAt: new Date().toISOString(),
@@ -117,7 +128,54 @@ export const actions = ({ connection: db }) => {
 				throw err;
 			}
 		},
-		async logout(session) {}
+
+		async signinApi(apikey) {
+			const { DB_NS, DB_DB } = env;
+
+			console.log(apikey);
+
+			try {
+				const token = await db.signin({
+					NS: DB_NS,
+					DB: DB_DB,
+					SC: 'apiusers',
+					apikey
+				});
+
+				console.log('token: ', token);
+
+				const me = await this.me();
+				const { id } = me;
+				const now = new Date();
+
+				await db.query('UPDATE $id SET loggedInAt = $now', {
+					id,
+					now
+				});
+
+				await db.query('UPDATE $id SET apiQueries += 1', {
+					id,
+					now
+				});
+
+				return token;
+			} catch (err) {
+				console.error(err);
+				throw err;
+			}
+		},
+
+		async logout(session) {},
+		async tryApiLogin(request) {
+			const { headers } = request;
+			const apikey = headers.get('x-api-key');
+
+			if (!apikey) {
+				return false;
+			}
+
+			return this.signinApi(apikey);
+		}
 	};
 };
 

@@ -15,7 +15,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     # If both directories exist, run your command here
     echo "Both directories exist"
     cd $HOME/www/${name}/${project}
-    nvm install v18
+    nvm install v20
     node -v
     npm -v
     npm i
@@ -26,6 +26,7 @@ if [ -d "$HOME/www/${name}/${project}" ]; then
     # ./migrations/deals.sh
     # ./migrations/comments.sh
     ./migrations/links.sh
+    ./migrations/apikeys.sh
     # ./migrations/applications.sh
     # ./migrations/services.sh
     # ./migrations/inquiries.sh

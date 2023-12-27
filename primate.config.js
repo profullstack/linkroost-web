@@ -1,32 +1,32 @@
-import {svelte} from '@primate/frontend';
-import store from '@primate/store';
-import {surrealdb} from '@primate/store';
-import types from '@primate/types';
-import session from '@primate/session';
-import ws from '@primate/ws';
-import esbuild from '@primate/esbuild';
+import { svelte } from "@primate/frontend";
+import store from "@primate/store";
+import { surrealdb } from "@primate/store";
+import types from "@primate/types";
+import session from "@primate/session";
+import ws from "@primate/ws";
+import esbuild from "@primate/esbuild";
 // import liveview from '@primate/liveview';
-import { config } from 'dotenv-flow';
-import { Logger } from 'primate';
+import { config } from "dotenv-flow";
+import { Logger } from "primate";
 
 config();
 
 const {
-	PORT: port,
-	DB_USER: user,
-	DB_PASS: pass,
-	DB_HOST: host,
-	DB_NS: ns,
-	DB_DB: db,
-	DB_PORT: db_port,
-	APP_DOMAIN,
-	GOOGLE_ANALYTICS_ID,
-	APP_NAME,
-	APP_SHORT_NAME,
-	APP_DESCRIPTION
+  PORT: port,
+  DB_USER: username,
+  DB_PASS: password,
+  DB_HOST: host,
+  DB_NS: namespace,
+  DB_DB: database,
+  DB_PORT: db_port,
+  APP_DOMAIN,
+  GOOGLE_ANALYTICS_ID,
+  APP_NAME,
+  APP_SHORT_NAME,
+  APP_DESCRIPTION,
 } = process.env;
 
-console.log(host, db_port)
+console.log(host, db_port);
 
 export default {
 	logger: {
@@ -37,8 +37,9 @@ export default {
 	http: {
 		port,
 		csp: {
-			'script-src':
-				"'unsafe-inline' 'self' https://plausible.io https://www.googletagmanager.com" //"yash.test.com:8443 'unsafe-eval';"
+			'script-src': "'unsafe-inline' 'self' 'unsafe-eval' *",
+			'style-src': "'unsafe-inline' 'self' *",
+			'img-src': "'unsafe-inline' 'self' *"
 		}
 	},
 	build: {
@@ -61,10 +62,10 @@ export default {
 			driver: surrealdb({
 				host,
 				port: db_port,
-				ns,
-				db,
-				user,
-				pass
+				namespace,
+				database,
+				username,
+				password
 			})
 		}),
 		types(),

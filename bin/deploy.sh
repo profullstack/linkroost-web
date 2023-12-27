@@ -4,12 +4,18 @@
 . .env
 . .env.local
 
-args=(-azvP --delete --exclude=node_modules --exclude=.idea --exclude=.git --exclude=data)
+args=(-azvP --delete --exclude=node_modules --exclude=.idea --exclude=data)
 hosts=($HOST_DOMAIN) # tornado lightning thunder tundra jefferson
 dry=() #add --dry-run to enable testing
 user=$HOST_USER
 name=$HOST_PATH
 project=$HOST_PROJECT
+
+
+if [ -z "$name" ] || [ -z "$project" ]; then
+    echo "One or both directories do not exist"
+    exit 1
+fi
 
 result=$(ssh $user@$HOST_DOMAIN "[ -d ~/www/$name ] && [ -d ~/www/$name/$project ] && echo 'exists' || echo 'does not exist'")
 

@@ -9,7 +9,10 @@ export const strict = true;
 export default {
   email,
   username: string,
+  firstName: string,
+  lastName: string,
   phone: string,
+  phonePrefix: string,
   password: string,
   password2: string,
 };
